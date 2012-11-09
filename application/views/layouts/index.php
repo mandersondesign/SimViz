@@ -182,9 +182,10 @@
 
         <!-- Main nav -->
         <ul class="nav">
-          <li><a href="<?php echo base_url(); ?>manager" title="" class="<?php if ($moduleID==0) echo 'active'?>"><span class="iconb" data-icon="&#xe1a4;" style="font-size: 24px; padding: 3px 0;"></span><span>Design Manager</span></a></li>
-          <li><a href="<?php echo base_url(); ?>simviz" title="" class="<?php if ($moduleID==1) echo 'active'?>"><span class="iconb" data-icon="&#xe050;" style="font-size: 24px; padding: 3px 0;"></span><span>Sim Visualizer</span></a></li>
-          <li><a href="<?php echo base_url(); ?>compare" title="" class="<?php if ($moduleID==2) echo 'active'?>"><span class="iconb" data-icon="&#xe1b1;" style="font-size: 24px; padding: 3px 0;"></span><span>Compare Designs</span></a></li>
+          <li><a href="<?php echo site_url(); ?>/dashboard" title="" class="<?php if ($moduleID==4) echo 'active'?>"><span class="iconb" data-icon="&#xe072;" style="font-size: 24px; padding: 3px 0;"></span><span>Dashboard</span></a></li>
+          <li><a href="<?php echo site_url(); ?>/manager" title="" class="<?php if ($moduleID==0) echo 'active'?>"><span class="iconb" data-icon="&#xe1a4;" style="font-size: 24px; padding: 3px 0;"></span><span>Design Manager</span></a></li>
+          <li><a href="<?php echo site_url(); ?>/simviz" title="" class="<?php if ($moduleID==1) echo 'active'?>"><span class="iconb" data-icon="&#xe050;" style="font-size: 24px; padding: 3px 0;"></span><span>Sim Visualizer</span></a></li>
+          <li><a href="<?php echo site_url(); ?>/compare" title="" class="<?php if ($moduleID==2) echo 'active'?>"><span class="iconb" data-icon="&#xe1b1;" style="font-size: 24px; padding: 3px 0;"></span><span>Compare Designs</span></a></li>
         </ul>
       </div>
 
@@ -238,15 +239,6 @@
       <!-- Main content ends -->
 
     </div>
-    <!-- Content ends -->
-
-
-
-    <script>
-      var _gaq=[['_setAccount','UA-33655665-1'],['_trackPageview']]; // Change UA-XXXXX-X to be your site's ID
-      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-        g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-        s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>       
+    <!-- Content ends --> 
   </body>
 </html>

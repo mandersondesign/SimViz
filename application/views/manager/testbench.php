@@ -50,7 +50,7 @@
               foreach ($configurations as $conf) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="http://mdanderson.me/projects/isis/plotutil/manager/configs/<?= $tbID; ?>/<?= $conf->confID; ?>/"><?= $conf->confName; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/manager/configs/<?= $tbID; ?>/<?= $conf->confID; ?>/"><?= $conf->confName; ?></a></td>
                 </tr>
               <?php
             }

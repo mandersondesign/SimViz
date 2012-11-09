@@ -2,22 +2,6 @@
 
 class Manager extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-  
   function __construct()
   {
       parent::__construct();
@@ -27,20 +11,17 @@ class Manager extends CI_Controller {
       $this->load->model('plot_model', 'plots', TRUE);
       
       $this->data['moduleID'] = 0;
-      $this->data['moduleURL'] = base_url() . 'graph';
-      $this->data['breadcrumbs'] = '<li><a href="' . base_url() . 'dashboard">Dashboard</a></li>';
-      $this->data['breadcrumbs'] .= '<li><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
-      
-      
+      $this->data['moduleURL'] = base_url() . 'index.php/manager';
+      $this->data['breadcrumbs'] = '<li><a href="' . site_url() . '/dashboard">Dashboard</a></li>';
+      //$this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
       $this->counter = 1;
   }
   
 	public function index()
 	{
-    $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Home</a></li>';
     $this->data['pageID'] = 0;
     $this->data['title'] = 'Design Manager';
-    
+    $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
     $this->data['testbenches'] = $this->testbench_model->getTestBenches();
     
     
@@ -54,13 +35,13 @@ class Manager extends CI_Controller {
   
   public function testbench($tbID = 0)
   {
-    $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
-    
+    $this->data['breadcrumbs'] .= '<li><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
+    $this->data['breadcrumbs'] .= '<li class = "current"><a href="' . $this->data['moduleURL'] . '/" title="">Test Bench</a></li>';
     $this->data['pageID'] = 1;
     $this->data['title'] = 'Testbench';
     $this->data['tbID'] = $tbID;
     $this->data['configurations'] = $this->testbench_model->getConfigurations();
-    
+
     $options = array(
         'data' => $this->data,
         'view' => 'manager/testbench'
@@ -70,6 +51,7 @@ class Manager extends CI_Controller {
   }
   public function configs($tbID=0, $confID = 0)
   {
+      $this->data['breadcrumbs'] .= '<li><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
     $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Configuration: '.$confID.'</a></li>';
     
     $this->data['pageID'] = 1;
@@ -87,6 +69,7 @@ class Manager extends CI_Controller {
   
   public function sim($simID=0)
   {
+    $this->data['breadcrumbs'] .= '<li><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
     $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Simulation: '.$simID.'</a></li>';
     
     $this->data['pageID'] = 1;

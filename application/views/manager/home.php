@@ -50,7 +50,7 @@
               foreach ($testbenches as $tb) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="http://mdanderson.me/projects/isis/plotutil/manager/testbench/<?= $tb->tbID; ?>/"><?= $tb->tbName; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/manager/testbench/<?= $tb->tbID; ?>/"><?= $tb->tbName; ?></a></td>
                 </tr>
               <?php
             }

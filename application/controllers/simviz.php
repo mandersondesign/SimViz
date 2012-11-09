@@ -2,22 +2,6 @@
 
 class Simviz extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-  
   function __construct()
   {
       parent::__construct();
@@ -26,8 +10,8 @@ class Simviz extends CI_Controller {
       $this->load->model('plot_model', 'plots', TRUE);
       
       $this->data['moduleID'] = 1;
-      $this->data['moduleURL'] = base_url() . 'graph';
-      $this->data['breadcrumbs'] = '<li><a href="' . base_url() . 'dashboard">Dashboard</a></li>';
+      $this->data['moduleURL'] = base_url() . 'index.php/simviz';
+      $this->data['breadcrumbs'] = '<li><a href="' . base_url() . 'index.php/dashboard">Dashboard</a></li>';
       $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Simulation Visualizer</a></li>';
       
       
@@ -47,7 +31,7 @@ class Simviz extends CI_Controller {
     $this->presentation->template($options);
 	}
   
-  public function plot($plotID=0)
+  public function plot($plotID=0, $plotType=0)
 	{
     if($plotID > 0)
     {
@@ -78,11 +62,21 @@ class Simviz extends CI_Controller {
       
       //print_r($plot);
     }
-    
+
+    $options = array();
+
+    if ($plotType == 0){
     $options = array(
         'data' => $this->data,
         'view' => 'simviz/plot'
     );
+
+    }
+    else if ($plotType == 1){
+    $options = array(
+        'data' => $this->data,
+        'view' => 'simviz/plotCompare'
+    );};
 
     $this->presentation->template($options);
 	}
@@ -373,10 +367,6 @@ class Simviz extends CI_Controller {
           if (!empty($obj->data_link))
           {
             
-            //$finalTreeJSON .= '{ "data" : "'.htmlspecialchars($obj->name).'" },';
-            //$finalTreeJSON .= $obj->data_link;
-            //$finalTreeJSON .= '{ "data" : "'.htmlspecialchars($obj->name).'", "attr" : { "id" : "'.$this->counter.'", "name" : "'.$name.'", "data_link" : "'+htmlspecialchars($obj->data_link)+'" }},';
-          
             $finalTreeJSON .= '{ "data" : "'.htmlspecialchars($obj->name).'", "attr" : { "id" : "'.$this->counter.'", "name" : "'.htmlspecialchars($newName).'", "data_link" : "'.htmlspecialchars($obj->data_link).'" },';
             $finalTreeJSON .= '"children" : []';
             $finalTreeJSON .= '},';
@@ -437,37 +427,6 @@ class Simviz extends CI_Controller {
     {
         // jsonOb is a number or string
     }
-  }
-  public function getTreeNodeJSON($id)
-  {
-//    $treeJson = base_url()."include/data/tree.json";
-//
-//    $treeLoop = json_decode($this->getJSONFilePlain($treeJson));
-//    
-//    $finalTreeJSON = '{ "data" : [';
-//
-//    
-//    
-//    foreach($treeLoop as $obj)
-//    {
-//      if ($this->counter == $id)
-//      {
-//        foreach($obj->children as $child)
-//        {
-//          $this->traverse($obj->name, $obj->children)
-//        }
-//      }
-//      $finalTreeJSON .= '{ "data" : "'.$obj->name.'", "attributes" : { "id" : "'.$this->counter.'" }, "state" : "closed"';
-//      $finalTreeJSON .= '"children" : [' .  . ']';
-//      $finalTreeJSON .= '},';
-//      
-//      $this->counter++;
-//    };
-//
-//    $finalTreeJSON = substr($finalTreeJSON, 0,strlen($finalTreeJSON)-1);
-//    $finalTreeJSON .= "]}";
-//    
-//    echo $finalTreeJSON;
   }
   public function getTreeJSON()
   {

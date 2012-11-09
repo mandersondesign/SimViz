@@ -50,7 +50,7 @@
               foreach ($simulations as $sim) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="http://mdanderson.me/projects/isis/plotutil/manager/sim/<?= $sim->simID; ?>/"><?= $sim->simName; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/manager/sim/<?= $sim->simID; ?>/"><?= $sim->simName; ?></a></td>
                 </tr>
               <?php
             }

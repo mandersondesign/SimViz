@@ -32,9 +32,10 @@
 
 <div class="wrapper">
   <div class="fluid">
-      <div class="grid12">
+    <div class="grid12">
+      
       <div class="widget">
-        <div class="whead"><h6>Plots</h6><div class="clear"></div></div>
+        <div class="whead"><h6>Configuration</h6><div class="clear"></div></div>
         <div id="dyna" class="hiddenpars">
           <a class="tOptions" title="Options"><img src="<?= base_url(); ?>include/images/icons/options" alt="" /></a>
           <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
@@ -45,10 +46,11 @@
             </thead>
             <tbody>
               <?php
-              foreach ($plots as $plot) {
+              // print_r($plots);
+              foreach ($simulations as $sim) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="<?php echo site_url(); ?>/simviz/plot/<?= $plot->PlotID; ?>/">Version <?= $plot->PlotVersion; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/compare/sim/<?= $sim->simID; ?>/"><?= $sim->simName; ?></a></td>
                 </tr>
               <?php
             }
