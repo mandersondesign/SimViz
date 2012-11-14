@@ -78,7 +78,7 @@
     </script>
     
 
-    <title><?= $title; ?></title>
+    <title><?php echo $title; ?></title>
 
     <style type="text/css">
     .logo {

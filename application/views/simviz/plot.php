@@ -21,11 +21,11 @@ $plotID = $plot->PlotID;
     var chart; // global
     var receiver = 0;
     var checked = 0;
-    var includeFilePath = "<?= base_url(); ?>include/";
+    var includeFilePath = "<?php echo base_url(); ?>include/";
 
     $(document).ready(function() {
 
-      var chartTitle = 'TestBench <?= $simulation->simTestBenchID; ?> / Configuration:  / Plot Version #<?= $plot->PlotVersion; ?>';
+      var chartTitle = 'TestBench <?php echo $simulation->simTestBenchID; ?> / Configuration:  / Plot Version #<?php echo $plot->PlotVersion; ?>';
       
       var options = {
         chart: {
@@ -243,18 +243,18 @@ if ($plotID == 0)
 {
   ?>
           
-  var settings = <?= $plot->PlotSettings; ?>;
+  var settings = <?php echo $plot->PlotSettings; ?>;
   console.log(settings);
   $("#plotSettings").html(settings);
   var setName = settings.series.name;
   var finName = setName.split(".").join("__");
 
-  doChartYDraw('<?= base_url(); ?>include/'+settings.series.data_link, finName);
+  doChartYDraw('<?php echo base_url(); ?>include/'+settings.series.data_link, finName);
   $('#y'+finName).prop("checked", true);
 
   //          setName = settings.xaxis;
   //          finName = setName.split(".").join("__");
-  //doChartXDraw('<?= base_url(); ?>include/'+settings.series.data_link, finName);
+  //doChartXDraw('<?php echo base_url(); ?>include/'+settings.series.data_link, finName);
   chart.redraw();
 
   $('#x'+finName).prop("checked", true);
@@ -268,7 +268,7 @@ if ($plotID == 0)
     $(".yaxisvar").live("click", function()
     {
 
-      var data_link = includeFilePath+'data/testbenches/DriveTrain/<?=$conf->confFolderName;?>/'+$(this).val();
+      var data_link = includeFilePath+'data/testbenches/DriveTrain/<?php echo$conf->confFolderName;?>/'+$(this).val();
       console.log(data_link);
       var name = $(this).attr("seriesName");
       var seriesShortName = $(this).attr("seriesShortName");
@@ -655,7 +655,7 @@ if ($plotID == 0)
               "ajax" : {
 
                 // the URL to fetch the data
-                "url" : "<?= base_url(); ?>graph/getTreeJSON"
+                "url" : "<?php echo base_url(); ?>graph/getTreeJSON"
 
               }
             }
@@ -671,7 +671,7 @@ if ($plotID == 0)
           });
 
           //          var text = "";
-          //          $.post("<?= base_url(); ?>graph/getTopTreeJSON", {}, function(result){
+          //          $.post("<?php echo base_url(); ?>graph/getTopTreeJSON", {}, function(result){
           //            text = result;
           //            console.log(text);
           //            
@@ -690,7 +690,7 @@ if ($plotID == 0)
     <div class="body">
       <ul>
         <li>
-          <input type="radio" name="xaxisoption" id="xTime" value="<?=base_url();?>include/<?=$plot->PlotDataStoreLocation;?>/DriveTrain_cfg1_data_chunk0.json" class="xaxisvar" checked />
+          <input type="radio" name="xaxisoption" id="xTime" value="<?php echo base_url();?>include/<?php echo $plot->PlotDataStoreLocation;?>/DriveTrain_cfg1_data_chunk0.json" class="xaxisvar" checked />
           <label for="xTime" class="eltLabel">Time</label>
         </li>
       </ul>
@@ -701,7 +701,7 @@ if ($plotID == 0)
     <div class="widget">
       <div class="whead"><h6>Plotting History</h6><div class="clear"></div></div>
       <div id="dyna" class="hiddenpars">
-        <a class="tOptions" title="Options"><img src="<?= base_url(); ?>include/images/icons/options" alt="" /></a>
+        <a class="tOptions" title="Options"><img src="<?php echo base_url(); ?>include/images/icons/options" alt="" /></a>
         <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
           <thead>
             <tr>
@@ -716,8 +716,8 @@ if ($plotID == 0)
             {
               ?>
               <tr class="gradeX">
-                <td><a href="http://mdanderson.me/projects/isis/plotutil/simviz/plot/<?= $plt->PlotID; ?>">Version <?= $plt->PlotVersion; ?></a></td>
-                <td><?= date("D M d, Y", strtotime($plt->PlotCreateDate)); ?></td>
+                <td><a href="http://mdanderson.me/projects/isis/plotutil/simviz/plot/<?php echo $plt->PlotID; ?>">Version <?php echo $plt->PlotVersion; ?></a></td>
+                <td><?php echo date("D M d, Y", strtotime($plt->PlotCreateDate)); ?></td>
               </tr>
               <?php
             }
@@ -744,7 +744,7 @@ if ($plotID == 0)
   $(document).ready(function() {
   
     //Global Variables
-    var plotSettings = <?= $plot->PlotSettings; ?>;
+    var plotSettings = <?php echo $plot->PlotSettings; ?>;
     $("#plotSettings").html(''+plotSettings);
 
     //Add variable / Variable Search Functions
@@ -775,7 +775,7 @@ if ($plotID == 0)
         variablesearch : variablesearch
       };
     
-      $.post('<?= base_url(); ?>simviz/getSearchResults/<?=$plot->PlotID;?>', post_data, function(result)
+      $.post('<?php echo base_url(); ?>index.php/simviz/getSearchResults/<?php echo $plot->PlotID;?>', post_data, function(result)
       {
         $("#searchResults").html(result);
         $("#barLoader").hide();
@@ -815,7 +815,7 @@ if ($plotID == 0)
           <input type="text" name="search" id="variableSerach" class="" placeholder="Enter search text..." />
         </form>
       </div>
-      <img id="barLoader" src="<?=base_url();?>include/images/bar_loader.gif" style="display:none;"/>
+      <img id="barLoader" src="<?php echo base_url();?>include/images/bar_loader.gif" style="display:none;"/>
       <div id="searchResults" style="margin: 3px 0px 3px 3px;" class="scrollpane">
         
       </div>
