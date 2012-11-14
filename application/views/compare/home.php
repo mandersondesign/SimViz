@@ -16,51 +16,53 @@
       });
 
 
-      //===== Dynamic table toolbars =====//		
+      //===== Dynamic table toolbars =====//
 
       $('#dyna .tOptions').click(function () {
         $('#dyna .tablePars').slideToggle(200);
-      });	
+      });
 
       $('.tOptions').click(function () {
         $(this).toggleClass("act");
       });
   });
-  
+
 </script>
 
 
 <div class="wrapper">
   <div class="fluid">
-      <div class="grid12">
+    <div class="grid12">
+
       <div class="widget">
-        <div class="whead"><h6>Plots</h6><div class="clear"></div></div>
+        <div class="whead"><h6>Versions</h6><div class="clear"></div></div>
         <div id="dyna" class="hiddenpars">
           <a class="tOptions" title="Options"><img src="<?= base_url(); ?>include/images/icons/options" alt="" /></a>
           <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
             <thead>
               <tr>
-                <th>Simulations<span class="sorting" style="display: block;"></span></th>
+                <th>Test Bench<span class="sorting" style="display: block;"></span></th>
               </tr>
             </thead>
             <tbody>
               <?php
-              foreach ($plots as $plot) {
+              // print_r($plots);
+              foreach ($testbenches as $tb) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="<?php echo site_url(); ?>/simviz/plot/<?= $plot->PlotID; ?>/">Version <?= $plot->PlotVersion; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/compare/testbench/<?= $tb->tbID; ?>/"><?= $tb->tbName; ?></a></td>
                 </tr>
               <?php
-            }
+             }
             ?>
             </tbody>
-          </table> 
+          </table>
         </div>
-        <div class="clear"></div> 
+        <div class="clear"></div>
       </div>
-      
+
     </div>
   </div>
-  
+
 </div>
 

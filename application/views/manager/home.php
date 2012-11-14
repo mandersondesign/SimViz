@@ -37,7 +37,7 @@
       <div class="widget">
         <div class="whead"><h6>Versions</h6><div class="clear"></div></div>
         <div id="dyna" class="hiddenpars">
-          <a class="tOptions" title="Options"><img src="<?php base_url(); ?>include/images/icons/options" alt="" /></a>
+          <a class="tOptions" title="Options"><img src="<?= base_url(); ?>include/images/icons/options" alt="" /></a>
           <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
             <thead>
               <tr>
@@ -50,7 +50,7 @@
               foreach ($testbenches as $tb) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="<?php echo base_url(); ?>index.php/manager/testbench/<?php echo $tb->tbID; ?>/"><?php echo $tb->tbName; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/manager/testbench/<?= $tb->tbID; ?>/"><?= $tb->tbName; ?></a></td>
                 </tr>
               <?php
             }

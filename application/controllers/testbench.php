@@ -2,22 +2,6 @@
 
 class Graph extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-  
   function __construct()
   {
       parent::__construct();
@@ -25,17 +9,13 @@ class Graph extends CI_Controller {
       $this->load->model('testbench_model', 'testbench', TRUE);
       $this->load->model('simulation_model', 'sims', TRUE);
       $this->load->model('plot_model', 'plots', TRUE);
-      
       $this->data['moduleID'] = 2;
       $this->data['moduleURL'] = base_url() . 'graph';
       $this->data['breadcrumbs'] = '<li><a href="' . base_url() . 'dashboard">Dashboard</a></li>';
       $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Graph</a></li>';
   }
-  
 	public function index($testBenchID=1, $plotID=0, $datafile="")
 	{
-    
-    
     $this->data['pageID'] = 0;
     $this->data['title'] = 'Graph Home';
     //echo "datafile: ".$datafile;
@@ -160,12 +140,6 @@ class Graph extends CI_Controller {
       echo "1|";
       echo  $jsonStream;
     }
-  }
-  
-  
-  public function buildTreeJSON($jsonDecoded)
-  {
-    
   }
 }
 

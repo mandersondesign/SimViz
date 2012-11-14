@@ -1,3 +1,4 @@
+
 <?php
 
 if (!defined('BASEPATH'))
@@ -54,29 +55,28 @@ class Simviz extends CI_Controller
   {
     if ($plotID > 0)
     {
-      
-      
-      
-      //Get Plot and Simulation
+
+
+
+//Get Plot and Simulation
       $plot = $this->plots->getPlotByID($plotID);
-      
-      //echo $plot->PlotTreeLocation;
-      
-      //return;
-      
+
+//echo $plot->PlotTreeLocation;
+//return;
+
       $simulation = $this->sims->getSimulationByID($plot->PlotSimID);
       $conf = $this->sims->getConfigByID($simulation->simConfigID);
       $this->loadVariables($plotID);
 
-      
-      
-      //Get JSON Files and Pass to Client
+
+
+//Get JSON Files and Pass to Client
       $this->data['jsonTreeFilePath'] = base_url() . "include/" . $plot->PlotTreeLocation;
       $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
       $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
 
 
-      //Pass Data Members to Front
+//Pass Data Members to Front
       $this->data['plot'] = $plot;
       $this->data['simID'] = $simulation->simID;
       $this->data['simulation'] = $simulation;
@@ -85,11 +85,11 @@ class Simviz extends CI_Controller
       $this->data['testBenchID'] = $plot->PlotTestBenchID;
       $this->data['plots'] = $this->plots->getPlotsBySimulationID($simulation->simID);
 
-      //Page Information
+//Page Information
       $this->data['title'] = 'Plot ' . $plotID . ' Design Review';
       $this->data['pageID'] = 1;
 
-      //print_r($plot);
+//print_r($plot);
     }
 
     $options = array(
@@ -100,25 +100,77 @@ class Simviz extends CI_Controller
     $this->presentation->template($options);
   }
 
+  public function plot2($plotID = 0, $plotType = 0)
+  {
+    if ($plotID > 0)
+    {
+//Get Plot and Simulation
+      $plot = $this->plots->getPlotByID($plotID);
+      $simulation = $this->sims->getSimulationByID($plot->PlotSimID);
+      $conf = $this->sims->getConfigByID($simulation->simConfigID);
+      $this->loadVariables($plotID);
+
+//Get JSON Files and Pass to Client
+      $this->data['jsonTreeFilePath'] = base_url() . "include/" . $plot->PlotTreeLocation;
+      $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
+      $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
+
+
+//Pass Data Members to Front
+      $this->data['plot'] = $plot;
+      $this->data['simID'] = $simulation->simID;
+      $this->data['simulation'] = $simulation;
+      $this->data['conf'] = $conf;
+
+      $this->data['testBenchID'] = $plot->PlotTestBenchID;
+      $this->data['plots'] = $this->plots->getPlotsBySimulationID($simulation->simID);
+
+//Page Information
+      $this->data['title'] = 'Plot ' . $plotID . ' Design Review';
+      $this->data['pageID'] = 1;
+
+//print_r($plot);
+    }
+
+    $options = array();
+
+    if ($plotType == 0)
+    {
+      $options = array(
+          'data' => $this->data,
+          'view' => 'simviz/plot'
+      );
+    }
+    else if ($plotType == 1)
+    {
+      $options = array(
+          'data' => $this->data,
+          'view' => 'simviz/plotCompare'
+      );
+    };
+
+    $this->presentation->template($options);
+  }
+
   public function getSearchResults($plotID)
   {
     $search = $this->input->post('variablesearch');
     $plotVariables = $this->plots->getVariablesByPlotID($plotID);
-    //$variables = json_decode($this->getList());
+//$variables = json_decode($this->getList());
 
     $codes = "";
     $count = 0;
 
     $searchArray = explode(" ", $search);
 
-    //echo count($plotVariables)."<br/>";
+//echo count($plotVariables)."<br/>";
 
     foreach ($plotVariables as $obj)
     {
       $isFound = 0;
 
       $varName = (string) $obj->varName;
-      //echo $varName.'<br/>';
+//echo $varName.'<br/>';
       foreach ($searchArray as $obj2)
       {
         $isFoundNew = strrpos(strtolower($varName), strtolower($obj2));
@@ -160,7 +212,7 @@ class Simviz extends CI_Controller
 
     $jsonStream = file_get_contents($jsonFilePath);
 
-    //Retrieve json file
+//Retrieve json file
     if (json_decode($jsonStream) == NULL)
     {
       die("No valid JSON file found for this component");
@@ -179,7 +231,7 @@ class Simviz extends CI_Controller
 
 
 
-    //Retrieve json file
+//Retrieve json file
     if (json_decode($jsonStream) == NULL)
     {
       return "No valid JSON file found for this component";
@@ -196,7 +248,7 @@ class Simviz extends CI_Controller
     $jsonFile = $jsonDirectory . $componentName . "_data.json";
     $jsonStream = file_get_contents($jsonFile);
 
-    //Retrieve json file
+//Retrieve json file
     if (json_decode($jsonStream) == NULL)
     {
       echo "0|";
@@ -299,10 +351,8 @@ class Simviz extends CI_Controller
 //        {
 //          $shortName = $nameArray[0] . ': ' . $nameArray[$nameArrayCount - 4] . '.' . $nameArray[$nameArrayCount - 3] . '.' . $nameArray[$nameArrayCount - 2] . '.' . $nameArray[$nameArrayCount - 1];
 //        }
+//$shortName = $obj->name;
 
-
-        //$shortName = $obj->name;
-        
         $varData = array(
             'varPlotID' => $plotID,
             'varName' => $obj->name,
@@ -351,7 +401,7 @@ class Simviz extends CI_Controller
         }
         else
         {
-          if(!empty($obj->children))
+          if (!empty($obj->children))
             $finalTreeJSON .= $this->newTraverseForList($obj->children);
         }
       }
@@ -360,7 +410,7 @@ class Simviz extends CI_Controller
     }
     else
     {
-      // jsonOb is a number or string
+// jsonOb is a number or string
 
       return "";
     }
@@ -414,7 +464,7 @@ class Simviz extends CI_Controller
     }
     else
     {
-      // jsonOb is a number or string
+// jsonOb is a number or string
 
       return "";
     }
@@ -429,16 +479,16 @@ class Simviz extends CI_Controller
 
       foreach ($jsonObj as $obj)
       {
-        // k is either an array index or object key
+// k is either an array index or object key
 
         $newName = $name . '.' . $obj->name;
 
         if (!empty($obj->data_link))
         {
 
-          //$finalTreeJSON .= '{ "data" : "'.htmlspecialchars($obj->name).'" },';
-          //$finalTreeJSON .= $obj->data_link;
-          //$finalTreeJSON .= '{ "data" : "'.htmlspecialchars($obj->name).'", "attr" : { "id" : "'.$this->counter.'", "name" : "'.$name.'", "data_link" : "'+htmlspecialchars($obj->data_link)+'" }},';
+//$finalTreeJSON .= '{ "data" : "'.htmlspecialchars($obj->name).'" },';
+//$finalTreeJSON .= $obj->data_link;
+//$finalTreeJSON .= '{ "data" : "'.htmlspecialchars($obj->name).'", "attr" : { "id" : "'.$this->counter.'", "name" : "'.$name.'", "data_link" : "'+htmlspecialchars($obj->data_link)+'" }},';
 
           $finalTreeJSON .= '{ "data" : "' . htmlspecialchars($obj->name) . '", "attr" : { "id" : "' . $this->counter . '", "name" : "' . htmlspecialchars($newName) . '", "data_link" : "' . htmlspecialchars($obj->data_link) . '" },';
           $finalTreeJSON .= '"children" : []';
@@ -453,7 +503,7 @@ class Simviz extends CI_Controller
 
         $this->counter++;
 
-        //traverse(name, v.children);
+//traverse(name, v.children);
       }
 
       if (strlen($finalTreeJSON) > 0)
@@ -463,7 +513,7 @@ class Simviz extends CI_Controller
     }
     else
     {
-      // jsonOb is a number or string
+// jsonOb is a number or string
 
       return "";
     }
@@ -478,7 +528,7 @@ class Simviz extends CI_Controller
 
       foreach ($jsonObj as $obj)
       {
-        // k is either an array index or object key
+// k is either an array index or object key
 
         if (!empty($obj->data_link))
         {
@@ -501,7 +551,7 @@ class Simviz extends CI_Controller
     }
     else
     {
-      // jsonOb is a number or string
+// jsonOb is a number or string
     }
   }
 
@@ -564,7 +614,7 @@ class Simviz extends CI_Controller
     $treeJson = base_url() . "include/data/testbenches/DriveTrain/cfg1/tree.json";
 
     $treeLoop = json_decode($this->getJSONFilePlain($treeJson));
-    //print_r($treeLoop);
+//print_r($treeLoop);
     $finalTreeJSON = '[ ';
 
     foreach ($treeLoop as $obj)

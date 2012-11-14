@@ -48,7 +48,7 @@
               foreach ($plots as $plot) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="<?php echo site_url(); ?>/simviz/plot/<?= $plot->PlotID; ?>/">Version <?= $plot->PlotVersion; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/simviz/plot/<?= $plot->PlotID; ?>/1">Version <?= $plot->PlotVersion; ?></a></td>
                 </tr>
               <?php
             }
