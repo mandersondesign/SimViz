@@ -27,7 +27,10 @@ class Simviz extends CI_Controller
     parent::__construct();
 
     $this->load->model('simulation_model', 'sims', TRUE);
+    $this->load->model('testbench_model', 'tb', TRUE);
     $this->load->model('plot_model', 'plots', TRUE);
+
+    $this->load->helper(array('form', 'url'));
 
     $this->data['moduleID'] = 1;
     $this->data['moduleURL'] = base_url() . 'graph';
@@ -42,6 +45,9 @@ class Simviz extends CI_Controller
   {
     $this->data['pageID'] = 0;
     $this->data['title'] = 'SimViz Home';
+
+    $this->data['testbenches'] = $this->tb->getTestBenches();
+    $this->data['configurations'] = $this->sims->getConfigurations();
 
     $options = array(
         'data' => $this->data,
@@ -71,7 +77,10 @@ class Simviz extends CI_Controller
 
 
 //Get JSON Files and Pass to Client
-      $this->data['jsonTreeFilePath'] = base_url() . "include/" . $plot->PlotTreeLocation;
+      $treeJson = base_url() . $plot->PlotTreeLocation;
+      $treeJson = str_replace("\\", "/", $treeJson);
+      
+      $this->data['jsonTreeFilePath'] = $treeJson;
       $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
       $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
 
@@ -111,7 +120,10 @@ class Simviz extends CI_Controller
       $this->loadVariables($plotID);
 
 //Get JSON Files and Pass to Client
-      $this->data['jsonTreeFilePath'] = base_url() . "include/" . $plot->PlotTreeLocation;
+      $treeJson = base_url() . $plot->PlotTreeLocation;
+      $treeJson = str_replace("\\", "/", $treeJson);
+      
+      $this->data['jsonTreeFilePath'] = $treeJson;
       $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
       $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
 
@@ -226,7 +238,7 @@ class Simviz extends CI_Controller
 
   public function getJSONFilePlain($jsonFilePath)
   {
-
+    var_dump($jsonFilePath);
     $jsonStream = file_get_contents($jsonFilePath);
 
 
@@ -244,7 +256,7 @@ class Simviz extends CI_Controller
 
   public function getJSONFileAjax($jsonFilePath)
   {
-    $jsonDirectory = base_url() . "include/";
+    $jsonDirectory = base_url();
     $jsonFile = $jsonDirectory . $componentName . "_data.json";
     $jsonStream = file_get_contents($jsonFile);
 
@@ -327,6 +339,7 @@ class Simviz extends CI_Controller
     $jsonVariableList = $this->getList($plotID);
     $variables = json_decode($jsonVariableList);
 
+    var_dump($jsonVariableList);
     if (count($this->plots->getVariablesByPlotID($plotID)) == 0)
     {
       foreach ($variables as $obj)
@@ -369,20 +382,26 @@ class Simviz extends CI_Controller
   public function getList($plotID)
   {
     $plot = $this->plots->getPlotByID($plotID);
-    $treeJson = base_url() . "include/" . $plot->PlotTreeLocation;
+    $treeJson = base_url() . $plot->PlotTreeLocation;
+    $treeJson = str_replace("\\", "/", $treeJson);
+    
+    $treeLoop = json_decode($this->getJSONFilePlain($treeJson), true);
 
-    $treeLoop = json_decode($this->getJSONFilePlain($treeJson));
-
+    //var_dump($treeLoop);
+    
     $finalTreeJSON = '[';
 
     foreach ($treeLoop as $obj)
     {
-      $finalTreeJSON .= $this->newTraverseForList($obj->children);
+      if (!empty($obj['children']))
+        $finalTreeJSON .= $this->newTraverseForList($obj['children']);
     };
 
     $finalTreeJSON = substr($finalTreeJSON, 0, strlen($finalTreeJSON) - 1);
     $finalTreeJSON .= "]";
 
+    
+    
     return $finalTreeJSON;
   }
 
@@ -390,19 +409,20 @@ class Simviz extends CI_Controller
   {
     if ($jsonObj != null)
     {
-
       $finalTreeJSON = "";
-
+      
       foreach ($jsonObj as $obj)
       {
-        if (!empty($obj->data_link))
+        //print_r($obj);
+        if (array_key_exists('data_link', $obj))
         {
-          $finalTreeJSON .= '{ "name" : "' . $obj->name . '", "full_name" : "' . $obj->full_name . '", "data_link" : "' . $obj->data_link . '" },';
+          
+          $finalTreeJSON .= '{ "name" : "' . $obj['name'] . '", "full_name" : "' . $obj['full_name'] . '", "data_link" : "' . $obj['data_link'] . '" },';
         }
         else
         {
-          if (!empty($obj->children))
-            $finalTreeJSON .= $this->newTraverseForList($obj->children);
+          if (!empty($obj['children']))
+            $finalTreeJSON .= $this->newTraverseForList($obj['children']);
         }
       }
 
@@ -628,6 +648,190 @@ class Simviz extends CI_Controller
     $finalTreeJSON .= " ] ";
 
     return $finalTreeJSON;
+  }
+
+  public function getConfigurationsJSON()
+  {
+    $tbID = $this->input->post('tbID');
+  }
+
+  public function testPost()
+  {
+    var_dump($this->input);
+    echo $this->input->post('test');
+    $tbID = $this->input->post('select_tb');
+    echo $tbID . '<br/>';
+  }
+
+  public function addNewPlot()
+  {
+    var_dump($this->input);
+    $plotname = $this->input->post('plot_name');
+    $simID = $this->input->post('simID');
+    $sim = $this->sims->getSimulationByID($simID);
+    echo $plotname . '<br/>';
+    
+    $plotJSON = '{';
+    $plotJSON .= '"Name" : "'.$plotname.'",';
+    $plotJSON .= '"TestbenchID" : "'.$sim->simTestBenchID.'",';
+    $plotJSON .= '"ExtremeLow" : "0",';
+    $plotJSON .= '"ExtremeHigh" : "0",';
+    $plotJSON .= '"series" : {},';
+    $plotJSON .= '"xaxis" : "Time",';
+    $plotJSON .= '"data_folder" : "'.addslashes ($sim->simDataPath).'"';
+    $plotJSON .= '}';
+    
+    $data = array(
+        "plotSimID" => $simID,
+        "plotVersion" => 1,
+        "plotSettings" => $plotJSON
+        
+    );
+    
+    $plotID = $this->plots->createPlot($data);
+    redirect('manager/sim/'.$simID);
+    
+  }
+  
+  public function addNewSimulation()
+  {
+    $tbID = $this->input->post('select_tb');
+    $confID = $this->input->post('select_config');
+    $simName = $this->input->post('new_simulation');
+    //$upFile = $this->input->post('upfile');
+
+    var_dump($this->input);
+    echo $tbID . '<br/>';
+    echo $confID . '<br/>';
+    ;
+
+    $folderBase = ".\\";
+
+    $simID = 0;
+    
+    if ($tbID != 0)
+    {
+      $tb = $this->tb->getTestBenchByID($tbID);
+
+      if ($confID != 0)
+      {
+        $cfg = $this->sims->getConfigByID($confID);
+
+        $simData = array(
+            "simTestBenchID" => $tbID,
+            "simConfigID" => $confID,
+            "simName" => $simName
+        );
+
+        $simID = $this->sims->createSimulation($simData);
+      }
+      else
+      {
+        $confName = $this->input->post('new_config');
+        $confData = array(
+            "confName" => $confName,
+            "confFolderName" => trim(str_replace(" ", "", $confName))
+        );
+        $confID = $this->sims->createConfiguration($confData);
+        $simData = array(
+            "simTestBenchID" => $tbID,
+            "simConfigID" => $confID,
+            "simName" => $simName
+        );
+
+        $simID = $this->sims->createSimulation($simData);
+      }
+    }
+    else
+    {
+      $tbName = $this->input->post('new_testbench');
+      $tbData = array(
+          "tbProjectID" => 1,
+          "tbName" => $tbName,
+          "tbFolderName" => trim(str_replace(" ", "", $tbName))
+      );
+      $tbID = $this->tb->createTestBench($tbData);
+
+      if ($confID != 0)
+      {
+        $simData = array(
+            "simTestBenchID" => $tbID,
+            "simConfigID" => $confID,
+            "simName" => $simName
+        );
+
+        $simID = $this->sims->createSimulation($simData);
+      }
+      else
+      {
+        $confName = $this->input->post('new_config');
+        $confData = array(
+            "confName" => $confName,
+            "confFolderName" => php_strip_whitespace($confName)
+        );
+        $confID = $this->sims->createConfiguration($confData);
+        $simData = array(
+            "simTestBenchID" => $tbID,
+            "simConfigID" => $confID,
+            "simName" => $simName
+        );
+
+        $simID = $this->sims->createSimulation($simData);
+      }
+    }
+
+    $tb = $this->tb->getTestBenchByID($tbID);
+    $cfg = $this->sims->getConfigByID($confID);
+
+    //Make FolderPath
+
+    $folderBase = str_replace('addNewSimulation', '', $_SERVER['PATH_TRANSLATED']);
+
+    $folderPath = $folderBase . "include\\data\\testbenches\\" . $tb->tbFoldername . "\\" . $cfg->confFolderName . "\\" . trim(str_replace(" ", "", $simName));
+    echo "<br/>" . $folderPath . "<br/>";
+    if (!is_dir($folderPath))
+      mkdir($folderPath,"0777",true);
+
+    $simData = array(
+      "simDataPath" => "include/data/testbenches/" . $tb->tbFoldername . "/" . $cfg->confFolderName . "/" . trim(str_replace(" ", "", $simName)) 
+    );
+    $this->sims->updateSimulation($simData, $simID);
+    
+    //Move File to new folder
+
+    $u_config['upload_path'] = $folderPath;
+    $u_config['allowed_types'] = '*';
+    $u_config['max_size'] = '100000000000';
+
+    $this->load->library('upload', $u_config);
+
+    if (!$this->upload->do_upload('upfile'))
+    {
+      $error = array('error' => $this->upload->display_errors());
+      var_dump($error);
+      //$this->load->view('upload_form', $error);
+    }
+    else
+    {
+      $data = array('upload_data' => $this->upload->data());
+      var_dump($data);
+      $upload_data = $this->upload->data();
+
+      //Run Python Script to Convert it
+      $pyscript = '.\\include\\scripts\\mat_conversion_v2.py';
+      $python = 'C:\\Python27\\python.exe';
+      
+      $newFilePath = $upload_data['full_path'];
+      //$output = 'C:\\Python27\\python.exe';
+      $cmd = "$python $pyscript $newFilePath $folderPath";
+      exec("$cmd", $output);
+      var_dump($output);
+
+      echo 'success';
+      //$this->load->view('upload_success', $data);
+      
+      redirect('manager/sim/'.$simID);
+    }
   }
 
 }
