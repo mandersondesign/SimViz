@@ -33,16 +33,18 @@
   <div class="fluid">
     <div class="grid12">
 
-      <a href="<?php echo base_url(); ?>index.php/manager/add_plot/<?php echo $simID;?>">Add New Plot</a>
+      <a href="<?php echo base_url(); ?>index.php/manager/add_plot/<?php echo $simID;?>" class="buttonM bGreen mb10 mt5" style="margin-top: 10px;">Add New Plot</a>
 
       <div class="widget">
+        
+        
         <div class="whead"><h6>Plots</h6><div class="clear"></div></div>
         <div id="dyna" class="hiddenpars">
           <a class="tOptions" title="Options"><img src="<?php echo base_url(); ?>include/images/icons/options" alt="" /></a>
           <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
             <thead>
               <tr>
-                <th>Simulations<span class="sorting" style="display: block;"></span></th>
+                <th>Plots<span class="sorting" style="display: block;"></span></th>
               </tr>
             </thead>
             <tbody>

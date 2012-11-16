@@ -57,29 +57,124 @@ class Simviz extends CI_Controller
     $this->presentation->template($options);
   }
 
-  public function plot($plotID = 0)
+  public function plot($plotID = 0, $plot2ID = 0)
   {
     if ($plotID > 0)
     {
+      if ($plot2ID == 0)
+      {
+        //Get Plot and Simulation
+        $plot = $this->plots->getPlotByID($plotID);
+
+        $simulation = $this->sims->getSimulationByID($plot->PlotSimID);
+        $conf = $this->sims->getConfigByID($simulation->simConfigID);
+        $this->loadVariables($plotID);
 
 
 
+        //Get JSON Files and Pass to Client
+        $treeJson = base_url() . $plot->PlotTreeLocation;
+        $treeJson = str_replace("\\", "/", $treeJson);
+
+        $this->data['jsonTreeFilePath'] = $treeJson;
+        $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
+        $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
+
+
+        //Pass Data Members to Front
+        $this->data['plot'] = $plot;
+        $this->data['simID'] = $simulation->simID;
+        $this->data['simulation'] = $simulation;
+        $this->data['conf'] = $conf;
+
+        $this->data['testBenchID'] = $plot->PlotTestBenchID;
+        $this->data['plots'] = $this->plots->getPlotsBySimulationID($simulation->simID);
+
+        //Page Information
+        $this->data['title'] = 'Plot ' . $plotID . ' Design Review';
+        $this->data['pageID'] = 1;
+        
+        $options = array(
+          'data' => $this->data,
+          'view' => 'simviz/plot'
+        );
+
+        $this->presentation->template($options);
+        
+      }
+      else
+      {
+        //Get Plot and Simulation
+        $plot = $this->plots->getPlotByID($plotID);
+        $plot2 = $this->plots->getPlotByID($plot2ID);
+
+        $simulation = $this->sims->getSimulationByID($plot->PlotSimID);
+        $conf = $this->sims->getConfigByID($simulation->simConfigID);
+        $this->loadVariables($plotID);
+        $this->loadVariables($plot2ID);
+
+        //Get JSON Files and Pass to Client
+        $treeJson = base_url() . $plot->PlotTreeLocation;
+        $treeJson = str_replace("\\", "/", $treeJson);
+
+        $this->data['jsonTreeFilePath'] = $treeJson;
+        $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
+        $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
+
+
+        //Pass Data Members to Front
+        $this->data['plot'] = $plot;
+        $this->data['plot2'] = $plot2;
+        $this->data['simID'] = $simulation->simID;
+        $this->data['simulation'] = $simulation;
+        $this->data['conf'] = $conf;
+
+        $this->data['testBenchID'] = $plot->PlotTestBenchID;
+        $this->data['plots'] = $this->plots->getPlotsBySimulationID($simulation->simID);
+
+        //Page Information
+        $this->data['title'] = 'Plot ' . $plotID . ' Design Review';
+        $this->data['pageID'] = 1;
+        
+        
+        $options = array(
+          'data' => $this->data,
+          'view' => 'simviz/plotCompare'
+        );
+
+        $this->presentation->template($options);
+        
+        
+      }
+      //print_r($plot);
+      
+      
+      
+      
+    }
+    else
+    {
+      $this->session->set_flashdata('message', 'Plot ID Invalid');
+      redirect('simviz', 'refresh');
+    }
+
+    
+  }
+
+  public function plotCompare($plotID = 0, $plotType = 0)
+  {
+    if ($plotID > 0)
+    {
 //Get Plot and Simulation
       $plot = $this->plots->getPlotByID($plotID);
-
-//echo $plot->PlotTreeLocation;
-//return;
-
       $simulation = $this->sims->getSimulationByID($plot->PlotSimID);
       $conf = $this->sims->getConfigByID($simulation->simConfigID);
       $this->loadVariables($plotID);
 
-
-
 //Get JSON Files and Pass to Client
       $treeJson = base_url() . $plot->PlotTreeLocation;
       $treeJson = str_replace("\\", "/", $treeJson);
-      
+
       $this->data['jsonTreeFilePath'] = $treeJson;
       $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
       $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
@@ -101,10 +196,22 @@ class Simviz extends CI_Controller
 //print_r($plot);
     }
 
-    $options = array(
-        'data' => $this->data,
-        'view' => 'simviz/plot'
-    );
+    $options = array();
+
+    if ($plotType == 0)
+    {
+      $options = array(
+          'data' => $this->data,
+          'view' => 'simviz/plot'
+      );
+    }
+    else if ($plotType == 1)
+    {
+      $options = array(
+          'data' => $this->data,
+          'view' => 'simviz/plotCompare'
+      );
+    };
 
     $this->presentation->template($options);
   }
@@ -122,7 +229,7 @@ class Simviz extends CI_Controller
 //Get JSON Files and Pass to Client
       $treeJson = base_url() . $plot->PlotTreeLocation;
       $treeJson = str_replace("\\", "/", $treeJson);
-      
+
       $this->data['jsonTreeFilePath'] = $treeJson;
       $this->data['jsonPlainTest'] = $this->getJSONFilePlain($this->data['jsonTreeFilePath']);
       $this->data['jsonDecoded'] = $this->getJSONFile($this->data['jsonTreeFilePath']);
@@ -175,14 +282,14 @@ class Simviz extends CI_Controller
 
     $searchArray = explode(" ", $search);
 
-//echo count($plotVariables)."<br/>";
+
+    $resultString = '{ "variables" : [';
 
     foreach ($plotVariables as $obj)
     {
       $isFound = 0;
 
       $varName = (string) $obj->varName;
-//echo $varName.'<br/>';
       foreach ($searchArray as $obj2)
       {
         $isFoundNew = strrpos(strtolower($varName), strtolower($obj2));
@@ -193,30 +300,64 @@ class Simviz extends CI_Controller
 
       if ($isFound > 0 && $isFound == count($searchArray))
       {
-        $codes .= '<div id="' . $obj->varID . '" class="fluid varbox';
-
-        if ($count == 0)
-          $codes .= ' first'; //add first
-
-        $codes .= '" style="margin:5px 5px 5px 0px; padding:0 0px 0 5px; border-bottom:1px #ccc solid;" name="' . $obj->varName . '" shortname="' . $obj->varShortName . '" data_link="' . $obj->varDataLink . '">';
-        $codes .= '<div class="grid12"  class="" style="font-size: 11px;">';
-        $codes .= '' . $obj->varShortName . '';
-
-        $codes .= '<div class="clear"></div></div></div>';
+        $resultString .= '{';
+        $resultString .= '"variable_id" : "' . $obj->varID . '",';
+        $resultString .= '"name" : "' . $obj->varName . '",';
+        $resultString .= '"short_name" : "' . $obj->varShortName . '",';
+        $resultString .= '"data_link" : "' . addslashes($obj->varDataLink) . '",';
+        $resultString .= '"plot_id" : "' . $obj->varPlotID . '",';
+        $resultString .= '"type" : "' . $obj->varType . '"';
+        $resultString .= '},';
 
         $count++;
       }
     }
 
-    if ($count == 0)
+    if ($count > 0)
+      $resultString = substr($resultString, 0, strlen($resultString) - 1);
+
+    $resultString .= "]}";
+
+//    if ($count == 0)
+//    {
+//      $codes .= '<div id="0" class="fluid contactbox" style="margin:5px 0 5px 0; border:1px #ccc solid;">';
+//      $codes .= '<div class="grid12" class="gameInfo">';
+//      $codes .= '<h6>No Matching Variables Found</h6>';
+//      $codes .= '<div class="clear"></div></div></div>';
+//    }
+
+    echo $resultString;
+  }
+
+  public function getTimeSeries()
+  {
+    $plotID = $this->input->post('plotID');
+    $plotVariables = $this->plots->getVariablesByPlotID($plotID);
+
+    $resultString = "";
+
+    foreach ($plotVariables as $obj)
     {
-      $codes .= '<div id="0" class="fluid contactbox" style="margin:5px 0 5px 0; border:1px #ccc solid;">';
-      $codes .= '<div class="grid12" class="gameInfo">';
-      $codes .= '<h6>No Matching Variables Found</h6>';
-      $codes .= '<div class="clear"></div></div></div>';
+
+      $varName = (string) $obj->varName;
+      //echo $varName;
+
+      if (strtolower($varName) == strtolower("time"))
+      {
+        $resultString = '{';
+        $resultString .= '"variable_id" : "' . $obj->varID . '",';
+        $resultString .= '"name" : "' . $obj->varName . '",';
+        $resultString .= '"short_name" : "' . $obj->varShortName . '",';
+        $resultString .= '"data_link" : "' . addslashes($obj->varDataLink) . '",';
+        $resultString .= '"plot_id" : "' . $obj->varPlotID . '",';
+        $resultString .= '"type" : "' . $obj->varType . '"';
+        $resultString .= '}';
+
+        break;
+      }
     }
 
-    echo $codes;
+    echo $resultString;
   }
 
   public function getJSONFile($jsonFilePath)
@@ -238,7 +379,7 @@ class Simviz extends CI_Controller
 
   public function getJSONFilePlain($jsonFilePath)
   {
-    var_dump($jsonFilePath);
+    //var_dump($jsonFilePath);
     $jsonStream = file_get_contents($jsonFilePath);
 
 
@@ -339,7 +480,7 @@ class Simviz extends CI_Controller
     $jsonVariableList = $this->getList($plotID);
     $variables = json_decode($jsonVariableList);
 
-    var_dump($jsonVariableList);
+    //var_dump($jsonVariableList);
     if (count($this->plots->getVariablesByPlotID($plotID)) == 0)
     {
       foreach ($variables as $obj)
@@ -368,7 +509,7 @@ class Simviz extends CI_Controller
 
         $varData = array(
             'varPlotID' => $plotID,
-            'varName' => $obj->name,
+            'varName' => $obj->full_name,
             'varShortName' => $obj->name,
             'varDataLink' => $obj->data_link
         );
@@ -384,24 +525,33 @@ class Simviz extends CI_Controller
     $plot = $this->plots->getPlotByID($plotID);
     $treeJson = base_url() . $plot->PlotTreeLocation;
     $treeJson = str_replace("\\", "/", $treeJson);
-    
+
     $treeLoop = json_decode($this->getJSONFilePlain($treeJson), true);
 
     //var_dump($treeLoop);
-    
+
     $finalTreeJSON = '[';
 
     foreach ($treeLoop as $obj)
     {
       if (!empty($obj['children']))
+      {
         $finalTreeJSON .= $this->newTraverseForList($obj['children']);
+      }
+      else
+      {
+        if (array_key_exists('data_link', $obj))
+        {
+          $finalTreeJSON .= '{ "name" : "' . $obj['name'] . '", "full_name" : "' . $obj['full_name'] . '", "data_link" : "' . $obj['data_link'] . '" },';
+        }
+      }
     };
 
     $finalTreeJSON = substr($finalTreeJSON, 0, strlen($finalTreeJSON) - 1);
     $finalTreeJSON .= "]";
 
-    
-    
+
+
     return $finalTreeJSON;
   }
 
@@ -410,13 +560,13 @@ class Simviz extends CI_Controller
     if ($jsonObj != null)
     {
       $finalTreeJSON = "";
-      
+
       foreach ($jsonObj as $obj)
       {
         //print_r($obj);
         if (array_key_exists('data_link', $obj))
         {
-          
+
           $finalTreeJSON .= '{ "name" : "' . $obj['name'] . '", "full_name" : "' . $obj['full_name'] . '", "data_link" : "' . $obj['data_link'] . '" },';
         }
         else
@@ -657,7 +807,7 @@ class Simviz extends CI_Controller
 
   public function testPost()
   {
-    var_dump($this->input);
+    //var_dump($this->input);
     echo $this->input->post('test');
     $tbID = $this->input->post('select_tb');
     echo $tbID . '<br/>';
@@ -665,34 +815,36 @@ class Simviz extends CI_Controller
 
   public function addNewPlot()
   {
-    var_dump($this->input);
+    //var_dump($this->input);
     $plotname = $this->input->post('plot_name');
     $simID = $this->input->post('simID');
     $sim = $this->sims->getSimulationByID($simID);
     echo $plotname . '<br/>';
-    
+
     $plotJSON = '{';
-    $plotJSON .= '"Name" : "'.$plotname.'",';
-    $plotJSON .= '"TestbenchID" : "'.$sim->simTestBenchID.'",';
+    $plotJSON .= '"Name" : "' . $plotname . '",';
+    $plotJSON .= '"TestbenchID" : "' . $sim->simTestBenchID . '",';
     $plotJSON .= '"ExtremeLow" : "0",';
     $plotJSON .= '"ExtremeHigh" : "0",';
     $plotJSON .= '"series" : {},';
     $plotJSON .= '"xaxis" : "Time",';
-    $plotJSON .= '"data_folder" : "'.addslashes ($sim->simDataPath).'"';
+    $plotJSON .= '"data_folder" : "' . addslashes($sim->simDataPath) . '"';
     $plotJSON .= '}';
+
+    $plots = $this->plots->getPlotsBySimulationID($simID);
+    
     
     $data = array(
         "plotSimID" => $simID,
-        "plotVersion" => 1,
+        "plotVersion" => count($plots)+1,
+        "plotJSON" => "{}",
         "plotSettings" => $plotJSON
-        
     );
-    
+
     $plotID = $this->plots->createPlot($data);
-    redirect('manager/sim/'.$simID);
-    
+    redirect('manager/sim/' . $simID);
   }
-  
+
   public function addNewSimulation()
   {
     $tbID = $this->input->post('select_tb');
@@ -700,7 +852,7 @@ class Simviz extends CI_Controller
     $simName = $this->input->post('new_simulation');
     //$upFile = $this->input->post('upfile');
 
-    var_dump($this->input);
+    //var_dump($this->input);
     echo $tbID . '<br/>';
     echo $confID . '<br/>';
     ;
@@ -708,7 +860,7 @@ class Simviz extends CI_Controller
     $folderBase = ".\\";
 
     $simID = 0;
-    
+
     if ($tbID != 0)
     {
       $tb = $this->tb->getTestBenchByID($tbID);
@@ -790,13 +942,13 @@ class Simviz extends CI_Controller
     $folderPath = $folderBase . "include\\data\\testbenches\\" . $tb->tbFoldername . "\\" . $cfg->confFolderName . "\\" . trim(str_replace(" ", "", $simName));
     echo "<br/>" . $folderPath . "<br/>";
     if (!is_dir($folderPath))
-      mkdir($folderPath,"0777",true);
+      mkdir($folderPath, "0777", true);
 
     $simData = array(
-      "simDataPath" => "include/data/testbenches/" . $tb->tbFoldername . "/" . $cfg->confFolderName . "/" . trim(str_replace(" ", "", $simName)) 
+        "simDataPath" => "include/data/testbenches/" . $tb->tbFoldername . "/" . $cfg->confFolderName . "/" . trim(str_replace(" ", "", $simName))
     );
     $this->sims->updateSimulation($simData, $simID);
-    
+
     //Move File to new folder
 
     $u_config['upload_path'] = $folderPath;
@@ -808,19 +960,19 @@ class Simviz extends CI_Controller
     if (!$this->upload->do_upload('upfile'))
     {
       $error = array('error' => $this->upload->display_errors());
-      var_dump($error);
+      //var_dump($error);
       //$this->load->view('upload_form', $error);
     }
     else
     {
       $data = array('upload_data' => $this->upload->data());
-      var_dump($data);
+      //var_dump($data);
       $upload_data = $this->upload->data();
 
       //Run Python Script to Convert it
       $pyscript = '.\\include\\scripts\\mat_conversion_v2.py';
       $python = 'C:\\Python27\\python.exe';
-      
+
       $newFilePath = $upload_data['full_path'];
       //$output = 'C:\\Python27\\python.exe';
       $cmd = "$python $pyscript $newFilePath $folderPath";
@@ -829,12 +981,40 @@ class Simviz extends CI_Controller
 
       echo 'success';
       //$this->load->view('upload_success', $data);
-      
-      redirect('manager/sim/'.$simID);
+
+      redirect('manager/sim/' . $simID);
     }
+  }
+
+  public function getPlotJSON()
+  {
+    $plotID = $this->input->post('plotID');
+    $plot = $this->plots->getPlotByID($plotID);
+
+    $plotJSON = '{';
+    $plotJSON .= '"plot_id" : "' . $plot->PlotID . '",';
+    $plotJSON .= '"sim_id" : "' . $plot->PlotSimID . '",';
+    $plotJSON .= '"sim_name" : "' . $plot->PlotSimName . '",';
+    $plotJSON .= '"config_id" : "' . $plot->PlotConfigurationID . '",';
+    $plotJSON .= '"config_name" : "' . $plot->PlotConfigurationName . '",';
+    $plotJSON .= '"config_folder_name" : "' . $plot->PlotConfigurationFolderName . '",';
+    $plotJSON .= '"testbench_id" : "' . $plot->PlotTestBenchName . '",';
+    $plotJSON .= '"testbench_name" : "' . $plot->PlotTestBenchID . '",';
+    $plotJSON .= '"testbench_folder_name" : "' . $plot->PlotTestBenchDescription . '",';
+    $plotJSON .= '"testbench_desc" : "' . $plot->PlotTestBenchFolderName . '",';
+    $plotJSON .= '"plot_version" : "' . $plot->PlotVersion . '",';
+    $plotJSON .= '"plot_json" : ' . $plot->PlotJSON . ',';
+    $plotJSON .= '"plot_settings" : ' . $plot->PlotSettings . ',';
+    $plotJSON .= '"create_date" : "' . $plot->PlotCreateDate . '",';
+    $plotJSON .= '"last_update_date" : "' . $plot->PlotLastUpdateDate . '",';
+    $plotJSON .= '"plot_tree_location" : "' . addslashes($plot->PlotTreeLocation) . '",';
+    $plotJSON .= '"plot_data_store_location" : "' . addslashes($plot->PlotDataStoreLocation) . '"';
+    $plotJSON .= '}';
+
+    echo $plotJSON;
   }
 
 }
 
 /* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* Location: ./application/controllers/simviz.php */

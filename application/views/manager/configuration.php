@@ -35,7 +35,7 @@
     <div class="grid12">
       
       <div class="widget">
-        <div class="whead"><h6>Configuration</h6><div class="clear"></div></div>
+        <div class="whead"><h6>Simulations</h6><div class="clear"></div></div>
         <div id="dyna" class="hiddenpars">
           <a class="tOptions" title="Options"><img src="<?php echo base_url(); ?>include/images/icons/options" alt="" /></a>
           <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
