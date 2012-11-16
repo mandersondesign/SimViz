@@ -55,19 +55,19 @@ class Testbench_Model extends CI_Model
       return $this->db->get( 'simulation' )->result();
     }
 
-    function createSimulation( $data )
+    function createTestBench( $data )
     {
-      $data['simCreateDate'] = date("Y-m-d H:i:s");
-      $this->db->insert('simulation', $data);
+      $data['tbCreateDate'] = date("Y-m-d H:i:s");
+      $this->db->insert('test_bench', $data);
 
       return $this->db->insert_id();
     }
 
-    function updateSimulation( $data, $simID )
+    function updateTestBench( $data, $tbID )
     {
         
-      $this->db->where('simID', $simID);
-      $this->db->update('simulation', $data);
+      $this->db->where('tbID', $tbID);
+      $this->db->update('test_bench', $data);
 
       return $this->db->affected_rows() == 1;
     }

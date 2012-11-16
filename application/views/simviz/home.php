@@ -1,12 +1,122 @@
-<form method="POST" enctype="multipart/form-data" action="manager"><br>
-Select files to upload: <br><br>
-<input type="file" name="upfile" multiple><br>
-<br>
-<input type="submit" value="Upload" class="buttonS bDefault">
+<script>
+    $(document).ready(function() {
+
+        $("#new_tb").show();
+        $("#new_configuration").show();
+
+        $("#select_tb").change(function() {
+            if ($(this).val() == 0)
+            {
+                $("#new_tb").show();
+            }
+            else
+            {
+                $("#new_tb").hide();
+        
+                //go get configs for that TB and fill select
+            }
+        });
+
+        $("#select_config").change(function() {
+            if ($(this).val() == 0)
+            {
+                $("#new_configuration").show();
+            }
+            else
+            {
+                $("#new_configuration").hide();
+        
+                //go get configs for that TB and fill select
+            }
+        });
+  
+    });
+
+
+
+</script>
+
+<!--<form method="POST" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/simviz/testPost">
+  <input type="text" name="test"/>
+  <div id="testbench">
+    Testbench Name: 
+
+    <div id="exist_testbench">
+      <select id="select_tb" name="select_tb">
+        <option value="0">Select One</option>
+<?php
+foreach ($testbenches as $tb) {
+    echo '<option value="' . $tb->tbID . '">' . $tb->tbName . '</option>';
+}
+?>
+      </select>
+    </div>
+    <div id="new_tb">
+      <br/>
+      or Enter a New Name: <input type="text" name="new_testbench"/>
+      </br>
+    </div>
+  </div>
+  <br/>
+  <input type="submit" value="Add New File">
+</form>-->
+
+<?php echo form_open_multipart(base_url() . "index.php/simviz/addNewSimulation"); ?>
+<!--<form method="POST" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/simviz/addNewSimulation">-->
+<form>
+    <br>  
+    <div id="testbench">
+        Testbench Name: 
+
+        <div id="exist_testbench">
+            <select id="select_tb" name="select_tb">
+                <option value="0">Select One</option>
+                <?php
+                foreach ($testbenches as $tb) {
+                    echo '<option value="' . $tb->tbID . '">' . $tb->tbName . '</option>';
+                }
+                ?>
+            </select>
+        </div>
+        <div id="new_tb">
+            <br/>
+            Or Enter a New Name: <input type="text" name="new_testbench" style ="border:solid 1px #B3ABAB;"/>
+            </br>
+        </div>
+    </div>
+    <br/>
+    <div id="configuration">
+        Configuration Name: 
+
+        <div id="exist_configuration">
+            <select id="select_config" name="select_config">
+                <option value="0">Select One</option>
+<?php
+foreach ($configurations as $cfg) {
+    echo '<option value="' . $cfg->confID . '">' . $cfg->confName . '</option>';
+}
+?>
+            </select>
+        </div>
+        <div id="new_configuration">
+            <br/>
+            Or Enter a New Name: <input type="text" name="new_config" style ="border:solid 1px #B3ABAB;"/>
+            </br>
+        </div>
+    </div>
+    <br/>
+    <div id="configuration">
+        Enter a Simulation Name: <input type="text" name="new_simulation" style ="border:solid 1px #B3ABAB;"/>
+    </div>
+
+    <br/>
+    Select MAT File: <br><input type="file" name="upfile" size="20"><br>
+    <br>
+    <input type="submit" value="Add New File" class="buttonS bDefault">
+    
+    <script type="text/javascript">
+
+</script>
+   
 </form>
 
-
-<div class="widget">    
-            <div class="whead"><h6>Multiple files uploader</h6><div class="clear"></div></div>
-            <div id="uploader" style="position: relative; "><div class="plupload_wrapper plupload_scroll"><div id="uploader_container" class="plupload_container" title="Using runtime: html5"><div class="plupload"><div class="plupload_header"><div class="plupload_header_content"><div class="plupload_header_title">Select files</div><div class="plupload_header_text">Add files to the upload queue and click the start button.</div></div></div><div class="plupload_content"><div class="plupload_filelist_header"><div class="plupload_file_name">Filename</div><div class="plupload_file_action">&nbsp;</div><div class="plupload_file_status"><span>Status</span></div><div class="plupload_file_size">Size</div><div class="plupload_clearer">&nbsp;</div></div><ul id="uploader_filelist" class="plupload_filelist"><li class="plupload_droptext">Drag files here.</li></ul><div class="plupload_filelist_footer"><div class="plupload_file_name"><div class="plupload_buttons"><a href="#" class="plupload_button plupload_add buttonS bDefault" id="uploader_browse" style="position: relative; z-index: 0; ">Add files</a><a href="#" class="plupload_button plupload_start buttonS bRed plupload_disabled">Start upload</a><div class="clear"></div></div><span class="plupload_upload_status"></span></div><div class="plupload_file_action"></div><div class="plupload_file_status"><span class="plupload_total_status">0%</span></div><div class="plupload_file_size"><span class="plupload_total_file_size">0 b</span></div><div class="plupload_progress"><div class="plupload_progress_container"><div class="plupload_progress_bar"></div></div></div><div class="plupload_clearer">&nbsp;</div></div></div></div></div><input type="hidden" id="uploader_count" name="uploader_count" value="0"></div><div id="p17c0amhvb1vrsr32nj31sob9a40_html5_container" style="position: absolute; background-color: transparent; width: 79px; height: 28px; overflow: hidden; z-index: -1; opacity: 0; top: 225px; left: 12px; background-position: initial initial; background-repeat: initial initial; " class="plupload html5"><div class="uploader" id="uniform-p17c0amhvb1vrsr32nj31sob9a40_html5"><input id="p17c0amhvb1vrsr32nj31sob9a40_html5" style="font-size: 999px; position: absolute; width: 100%; height: 100%; opacity: 0; " type="file" accept="image/jpeg,image/gif,image/png" multiple="multiple" size="24"><span class="filename">No file selected</span><span class="action">Choose File</span></div></div></div>                    
-        </div>

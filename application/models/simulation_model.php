@@ -37,6 +37,12 @@ class Simulation_Model extends CI_Model
       return $this->db->get_where( 'simulation', $data, 1 )->row();
     }
     
+    
+    function getConfigurations()
+    {
+      return $this->db->get( 'configuration' )->result();
+    }
+    
     function getConfigByID( $configID )
     {
       $data = array(
@@ -51,6 +57,14 @@ class Simulation_Model extends CI_Model
       return $this->db->get( 'simulation')->row();
     }
 
+    function createConfiguration( $data )
+    {
+      $data['confCreateDate'] = date("Y-m-d H:i:s");
+      $this->db->insert('configuration', $data);
+
+      return $this->db->insert_id();
+    }
+    
     function createSimulation( $data )
     {
       $data['simCreateDate'] = date("Y-m-d H:i:s");

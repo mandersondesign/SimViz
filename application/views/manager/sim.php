@@ -1,5 +1,4 @@
 <?php
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -10,33 +9,36 @@
   $(document).ready(function()
   {
     vTable = $('.vTable').dataTable({
-        "bJQueryUI": false,
-        "bAutoWidth": false,
-        "sDom": '<"H"fl>t<"F"ip>'
-      });
+      "bJQueryUI": false,
+      "bAutoWidth": false,
+      "sDom": '<"H"fl>t<"F"ip>'
+    });
 
 
-      //===== Dynamic table toolbars =====//		
+    //===== Dynamic table toolbars =====//		
 
-      $('#dyna .tOptions').click(function () {
-        $('#dyna .tablePars').slideToggle(200);
-      });	
+    $('#dyna .tOptions').click(function () {
+      $('#dyna .tablePars').slideToggle(200);
+    });	
 
-      $('.tOptions').click(function () {
-        $(this).toggleClass("act");
-      });
+  $('.tOptions').click(function () {
+    $(this).toggleClass("act");
   });
+});
   
 </script>
 
 
 <div class="wrapper">
   <div class="fluid">
-      <div class="grid12">
+    <div class="grid12">
+
+        
+
       <div class="widget">
         <div class="whead"><h6>Plots</h6><div class="clear"></div></div>
         <div id="dyna" class="hiddenpars">
-          <a class="tOptions" title="Options"><img src="<?= base_url(); ?>include/images/icons/options" alt="" /></a>
+          <a class="tOptions" title="Options"><img src="<?php echo base_url(); ?>include/images/icons/options" alt="" /></a>
           <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
             <thead>
               <tr>
@@ -45,22 +47,23 @@
             </thead>
             <tbody>
               <?php
-              foreach ($plots as $plot) {
+              foreach ($plots as $plot)
+              {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="<?php echo site_url(); ?>/simviz/plot/<?= $plot->PlotID; ?>/">Version <?= $plot->PlotVersion; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/simviz/plot/<?php echo $plot->PlotID; ?>/">Version <?php echo $plot->PlotVersion; ?></a></td>
                 </tr>
-              <?php
-            }
-            ?>
+                <?php
+              }
+              ?>
             </tbody>
           </table> 
         </div>
         <div class="clear"></div> 
       </div>
-      
+        <br><a href="<?php echo base_url();?>index.php/manager/add_plot/<?php echo $simID;?>" class="buttonS bDefault">Add New Plot</a>
     </div>
   </div>
-  
+
 </div>
 

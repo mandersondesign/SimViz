@@ -37,7 +37,7 @@
       <div class="widget">
         <div class="whead"><h6>Versions</h6><div class="clear"></div></div>
         <div id="dyna" class="hiddenpars">
-          <a class="tOptions" title="Options"><img src="<?= base_url(); ?>include/images/icons/options" alt="" /></a>
+          <a class="tOptions" title="Options"><img src="<?php echo base_url(); ?>include/images/icons/options" alt="" /></a>
           <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
             <thead>
               <tr>
@@ -50,7 +50,7 @@
               foreach ($configurations as $conf) {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="<?php echo site_url(); ?>/compare/configs/<?= $tbID; ?>/<?= $conf->confID; ?>/"><?= $conf->confName; ?></a></td>
+                  <td><a href="<?php echo site_url(); ?>/compare/configs/<?php echo $tbID; ?>/<?php echo $conf->confID; ?>/"><?php echo $conf->confName; ?></a></td>
                 </tr>
               <?php
             }

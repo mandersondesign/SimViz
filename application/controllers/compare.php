@@ -10,7 +10,7 @@ class Compare extends CI_Controller {
       $this->load->model('testbench_model');
       $this->load->model('plot_model', 'plots', TRUE);
 
-      $this->data['moduleURL'] = base_url() . 'index.php/compare';
+      $this->data['moduleURL'] = site_url() . '/compare';
       $this->data['breadcrumbs'] = '<li><a href="' . site_url() . '/dashboard">Dashboard</a></li>';
       
       $this->counter = 1;
