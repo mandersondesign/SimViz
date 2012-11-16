@@ -1,5 +1,12 @@
 <form method="POST" enctype="multipart/form-data" action="manager"><br>
-File to upload: <input type="file" name="upfile" multiple><br>
+Select files to upload: <br><br>
+<input type="file" name="upfile" multiple><br>
 <br>
-<input type="submit" value="Upload">
+<input type="submit" value="Upload" class="buttonS bDefault">
 </form>
+
+
+<div class="widget">    
+            <div class="whead"><h6>Multiple files uploader</h6><div class="clear"></div></div>
+            <div id="uploader" style="position: relative; "><div class="plupload_wrapper plupload_scroll"><div id="uploader_container" class="plupload_container" title="Using runtime: html5"><div class="plupload"><div class="plupload_header"><div class="plupload_header_content"><div class="plupload_header_title">Select files</div><div class="plupload_header_text">Add files to the upload queue and click the start button.</div></div></div><div class="plupload_content"><div class="plupload_filelist_header"><div class="plupload_file_name">Filename</div><div class="plupload_file_action">&nbsp;</div><div class="plupload_file_status"><span>Status</span></div><div class="plupload_file_size">Size</div><div class="plupload_clearer">&nbsp;</div></div><ul id="uploader_filelist" class="plupload_filelist"><li class="plupload_droptext">Drag files here.</li></ul><div class="plupload_filelist_footer"><div class="plupload_file_name"><div class="plupload_buttons"><a href="#" class="plupload_button plupload_add buttonS bDefault" id="uploader_browse" style="position: relative; z-index: 0; ">Add files</a><a href="#" class="plupload_button plupload_start buttonS bRed plupload_disabled">Start upload</a><div class="clear"></div></div><span class="plupload_upload_status"></span></div><div class="plupload_file_action"></div><div class="plupload_file_status"><span class="plupload_total_status">0%</span></div><div class="plupload_file_size"><span class="plupload_total_file_size">0 b</span></div><div class="plupload_progress"><div class="plupload_progress_container"><div class="plupload_progress_bar"></div></div></div><div class="plupload_clearer">&nbsp;</div></div></div></div></div><input type="hidden" id="uploader_count" name="uploader_count" value="0"></div><div id="p17c0amhvb1vrsr32nj31sob9a40_html5_container" style="position: absolute; background-color: transparent; width: 79px; height: 28px; overflow: hidden; z-index: -1; opacity: 0; top: 225px; left: 12px; background-position: initial initial; background-repeat: initial initial; " class="plupload html5"><div class="uploader" id="uniform-p17c0amhvb1vrsr32nj31sob9a40_html5"><input id="p17c0amhvb1vrsr32nj31sob9a40_html5" style="font-size: 999px; position: absolute; width: 100%; height: 100%; opacity: 0; " type="file" accept="image/jpeg,image/gif,image/png" multiple="multiple" size="24"><span class="filename">No file selected</span><span class="action">Choose File</span></div></div></div>                    
+        </div>

@@ -66,6 +66,17 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>include/js/files/bootstrap.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>include/js/files/functions.js"></script>
 
+    
+    <!-- plupload libraries -->
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.browserplus.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.flash.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.full.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.gears.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.html4.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.html5.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.silverlight.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/jquery.plupload.queue/jquery.plupload.queue.js"></script>
     <!-- Chat Stuff    -->
     
     
