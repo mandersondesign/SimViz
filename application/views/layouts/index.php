@@ -6,6 +6,11 @@
 
     <link href="<?php echo base_url(); ?>include/css/styles.css" rel="stylesheet" type="text/css" />
     
+    <!--newly added ones-->
+    <link href="http://fonts.googleapis.com/css?family=Cuprum" rel="stylesheet" type="text/css" />
+    <link href="selector/styles.css" rel="stylesheet" media="all" />
+    <script type="text/javascript" src="selector/jquery-1.4.2.min.js"></script>
+    
     <!--[if IE]> <link href="css/ie.css" rel="stylesheet" type="text/css"> <![endif]-->
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -66,6 +71,18 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>include/js/files/bootstrap.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>include/js/files/functions.js"></script>
 
+    
+    <!-- plupload libraries -->
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.browserplus.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.flash.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.full.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.gears.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.html4.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.html5.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/plupload.silverlight.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+    <!-- Chat Stuff    -->
     
     
     

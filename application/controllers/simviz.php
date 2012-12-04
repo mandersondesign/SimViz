@@ -34,7 +34,7 @@ class Simviz extends CI_Controller
 
     $this->data['moduleID'] = 1;
     $this->data['moduleURL'] = base_url() . 'graph';
-    $this->data['breadcrumbs'] = '<li><a href="' . base_url() . 'dashboard">Dashboard</a></li>';
+    $this->data['breadcrumbs'] = '<li><a href="' . site_url() . '/dashboard">Dashboard</a></li>';
     $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Simulation Visualizer</a></li>';
 
 

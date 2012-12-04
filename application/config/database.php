@@ -45,7 +45,7 @@
 | the active record class
 */
 
-$active_group = 'local';
+$active_group = 'remote';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
@@ -63,6 +63,22 @@ $db['default']['dbcollat'] = 'utf8_general_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
+
+$db['remote']['hostname'] = '65.182.108.14';
+$db['remote']['username'] = 'mdanders_isis';
+$db['remote']['password'] = 'mu*a8TER';
+$db['remote']['database'] = 'mdanders_isis';
+$db['remote']['dbdriver'] = 'mysql';
+$db['remote']['dbprefix'] = '';
+$db['remote']['pconnect'] = TRUE;
+$db['remote']['db_debug'] = TRUE;
+$db['remote']['cache_on'] = FALSE;
+$db['remote']['cachedir'] = '';
+$db['remote']['char_set'] = 'utf8';
+$db['remote']['dbcollat'] = 'utf8_general_ci';
+$db['remote']['swap_pre'] = '';
+$db['remote']['autoinit'] = TRUE;
+$db['remote']['stricton'] = FALSE;
 
 
 $db ['local'] ['hostname'] ='localhost';

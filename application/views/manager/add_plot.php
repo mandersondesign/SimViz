@@ -37,10 +37,10 @@
 </script>
 
 <form method="POST" action="<?php echo base_url(); ?>index.php/simviz/addNewPlot">
-  <div id="plot">
-    Plot Name: <input type="text" name="plot_name"/>
+    <br><div id="plot">
+    Plot Name: <input type="text" name="plot_name" style ="border:solid 1px #B3ABAB;"/>
 
   </div>
-  <input type="hidden" name="simID" value="<?php echo $simID; ?>"/>
-  <input type="submit" value="Add New File">
+    <input type="hidden" name="simID" value="<?php echo $simID; ?>"/>
+    <br><input type="submit" value="Add New File" class="buttonS bDefault">
 </form>

@@ -63,7 +63,7 @@
         </div>
         <div class="clear"></div> 
       </div>
-
+        <br><a href="<?php echo base_url();?>index.php/manager/add_plot/<?php echo $simID;?>" class="buttonS bDefault">Add New Plot</a>
     </div>
   </div>
 

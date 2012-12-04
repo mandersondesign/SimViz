@@ -15,7 +15,7 @@ class Manager extends CI_Controller
     $this->load->model('plot_model', 'plots', TRUE);
 
     $this->data['moduleID'] = 0;
-    $this->data['moduleURL'] = base_url() . 'index.php/manager';
+    $this->data['moduleURL'] = site_url() . '/manager';
     $this->data['breadcrumbs'] = '<li><a href="' . site_url() . '/dashboard">Dashboard</a></li>';
     //$this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
     $this->counter = 1;
@@ -41,10 +41,9 @@ class Manager extends CI_Controller
   {
     $this->data['pageID'] = 0;
     $this->data['title'] = 'Add Plot';
+    $this->data['breadcrumbs'] .= '<li><a href="' . $this->data['moduleURL'] . '/" title="">Design Manager</a></li>';
     $this->data['breadcrumbs'] .= '<li class="current"><a href="' . $this->data['moduleURL'] . '/" title="">Add Plot</a></li>';
     $this->data['simID'] = $simID;
-
-
     $options = array(
         'data' => $this->data,
         'view' => 'manager/add_plot'

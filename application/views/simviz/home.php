@@ -1,12 +1,6 @@
 <script>
-  $(document).ready(function() {
+    $(document).ready(function() {
 
-    $("#new_tb").show();
-    $("#new_configuration").show();
-
-    $("#select_tb").change(function() {
-      if ($(this).val() == 0)
-      {
         $("#new_tb").show();
       }
       else
@@ -28,7 +22,7 @@
       }
     });
   
-  });
+    });
 
 
 
