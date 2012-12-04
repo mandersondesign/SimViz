@@ -1,11 +1,11 @@
 <?php
 $plotID = $plot->PlotID;
 ?>
-<script src="http://mdanderson.me/projects/isis/js/highcharts.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/js/modules/exporting.src.js"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/plotutil/include/js/plugins/jstree/_lib/jquery.cookie.js"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/plotutil/include/js/plugins/jstree/_lib/jquery.hotkeys.js"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/plotutil/include/js/plugins/jstree/jquery.jstree.js"></script>
+<script src="<?php echo base_url(); ?>include/js/highcharts.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/modules/exporting.src.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/plugins/jstree/_lib/jquery.cookie.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/plugins/jstree/_lib/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/plugins/jstree/jquery.jstree.js"></script>
 
 
 <script type="text/javascript" src="<?php echo base_url(); ?>include/js/knockout-2.1.0.js"></script>
@@ -189,10 +189,7 @@ $plotID = $plot->PlotID;
             marginRight: 130,
             marginBottom: 75,
             events: {
-              click : function (event)
-              {
-                console.log('click');
-              },
+              
               selection: function(event) {
                 if (event.xAxis != null)
                 {
@@ -312,7 +309,7 @@ $plotID = $plot->PlotID;
         var time_data_link = self.includeFilePath+settings.data_folder+'/'+self.timeSeriesVar().data_link();
         var time = new Array();
         
-        console.log(yvar.data_link());
+        //console.log(yvar.data_link());
         
         $.getJSON(time_data_link, function(json) {
           $.each(json, function (i, obj) {
@@ -332,7 +329,7 @@ $plotID = $plot->PlotID;
                 {
                   console.log("var");
                   var var_data_link = self.includeFilePath+settings.data_folder+'/'+yvar.data_link();
-                  console.log(var_data_link);
+                  //console.log(var_data_link);
                   $.getJSON(var_data_link, function(json) {
                     
                     console.log(name);
@@ -385,7 +382,7 @@ $plotID = $plot->PlotID;
                 {
                   console.log("param");
                   var var_data_link = self.includeFilePath+settings.data_folder+'/'+yvar.data_link();
-                  console.log(var_data_link);
+                  //console.log(var_data_link);
                   $.getJSON(var_data_link, function(json) {
                     
                     console.log(name);
@@ -468,7 +465,7 @@ $plotID = $plot->PlotID;
         {
           
           var json = $.parseJSON(result);
-          console.log(json);
+          //console.log(json);
           
           var mappedVars = $.map(json.variables, function(item) { return new Variable(item) });
           self.searchVariables(mappedVars);

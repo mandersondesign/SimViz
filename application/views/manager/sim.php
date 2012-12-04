@@ -53,7 +53,7 @@
               {
                 ?>
                 <tr class="gradeX">
-                  <td><a href="<?php echo site_url(); ?>/simviz/plot/<?php echo $plot->PlotID; ?>/">Version <?php echo $plot->PlotVersion; ?></a></td>
+                  <td><a class="LoadingDialog_open" href="<?php echo site_url(); ?>/simviz/plot/<?php echo $plot->PlotID; ?>/">Version <?php echo $plot->PlotVersion; ?></a></td>
                 </tr>
                 <?php
               }
@@ -67,5 +67,34 @@
     </div>
   </div>
 
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    //Add variable / Variable Search Functions
+    $('#LoadingDialog').dialog({
+      autoOpen: false,
+      width: 1000,
+      height: 600,
+      buttons: {}
+    });
+
+    $('.LoadingDialog_open').live("click", function (e) {
+      e.preventDefault();
+      $('#LoadingDialog').dialog('open');
+      window.location = $(this).attr('href');
+    });
+  });
+</script>
+
+
+<div id="LoadingDialog" class="dialog" title="Loading Plot Variables">
+  <h3>Loading Variables</h3>
+  <div class="fluid">
+    <div class="widget grid12">
+      <img id="barLoader" src="<?php echo base_url(); ?>include/images/circle_loader.gif" />
+    </div>
+  </div>
 </div>
 

@@ -66,7 +66,6 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>include/js/files/bootstrap.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>include/js/files/functions.js"></script>
 
-    <!-- Chat Stuff    -->
     
     
     
@@ -240,5 +239,8 @@
 
     </div>
     <!-- Content ends --> 
+    
+    <script type="text/javascript" src="<?php echo base_url(); ?>include/js/validatious-custom-0.9.1.min.js"></script>
+    
   </body>
 </html>

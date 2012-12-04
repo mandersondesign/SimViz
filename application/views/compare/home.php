@@ -1,68 +1,105 @@
-<?php
+<script>
+  $(document).ready(function() {
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
+    $("#new_tb").show();
+    $("#new_configuration").show();
 
-<script type="text/javascript">
-  $(document).ready(function()
-  {
-    vTable = $('.vTable').dataTable({
-        "bJQueryUI": false,
-        "bAutoWidth": false,
-        "sDom": '<"H"fl>t<"F"ip>'
-      });
+    $("#select_tb").change(function() {
+      if ($(this).val() == 0)
+      {
+        $("#new_tb").show();
+      }
+      else
+      {
+        $("#new_tb").hide();
+        
+        //go get configs for that TB and fill select
+      }
+    });
 
-
-      //===== Dynamic table toolbars =====//
-
-      $('#dyna .tOptions').click(function () {
-        $('#dyna .tablePars').slideToggle(200);
-      });
-
-      $('.tOptions').click(function () {
-        $(this).toggleClass("act");
-      });
+    $("#select_config").change(function() {
+      if ($(this).val() == 0)
+      {
+        $("#new_configuration").show();
+      }
+      else
+      {
+        $("#new_configuration").hide();
+        
+        //go get configs for that TB and fill select
+      }
+    });
+  
   });
+
+
 
 </script>
 
+<form method="POST" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/compare/redirectToNextStep" class="main">
+  <fieldset>
+    <div class="widget fluid">
+      <div class="whead"><h6>Choose a Testbench & 2 Configurations:</h6><div class="clear"></div></div>
 
-<div class="wrapper">
-  <div class="fluid">
-    <div class="grid12">
+      <div id="testbench">
+        <div class="formRow" id="exist_testbench">
 
-      <div class="widget">
-        <div class="whead"><h6>Versions</h6><div class="clear"></div></div>
-        <div id="dyna" class="hiddenpars">
-          <a class="tOptions" title="Options"><img src="<?php echo base_url(); ?>include/images/icons/options" alt="" /></a>
-          <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
-            <thead>
-              <tr>
-                <th>Test Bench<span class="sorting" style="display: block;"></span></th>
-              </tr>
-            </thead>
-            <tbody>
+          <div class="grid3"><label>Testbench:</label> </div>
+          <div class="grid9">
+            <select id="select_tb" name="select_tb">
+              <option value="0">Select One</option>
               <?php
-              // print_r($plots);
-              foreach ($testbenches as $tb) {
-                ?>
-                <tr class="gradeX">
-                  <td><a href="<?php echo site_url(); ?>/compare/testbench/<?php echo $tb->tbID; ?>/"><?php echo $tb->tbName; ?></a></td>
-                </tr>
-              <?php
-             }
-            ?>
-            </tbody>
-          </table>
+              foreach ($testbenches as $tb)
+              {
+                echo '<option value="' . $tb->tbID . '">' . $tb->tbName . '</option>';
+              }
+              ?>
+            </select>
+          </div>
+          <div class="clear"></div>
         </div>
-        <div class="clear"></div>
+      </div>
+
+      <div id="configuration">
+        <div class="formRow" id="exist_configuration">
+          <div class="grid3"><label>First Configuration:</label></div>
+          <div class="grid9">
+            <select id="select_config" name="select_config">
+              <option value="0">Select One</option>
+              <?php
+              foreach ($configurations as $cfg)
+              {
+                echo '<option value="' . $cfg->confID . '">' . $cfg->confName . '</option>';
+              }
+              ?>
+            </select>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+      
+      <div id="configuration2">
+        <div class="formRow" id="exist_configuration2">
+          <div class="grid3"><label>Second Configuration:</label></div>
+          <div class="grid9">
+            <select id="select_config2" name="select_config2">
+              <option value="0">Select One</option>
+              <?php
+              foreach ($configurations as $cfg)
+              {
+                echo '<option value="' . $cfg->confID . '">' . $cfg->confName . '</option>';
+              }
+              ?>
+            </select>
+          </div>
+          <div class="clear"></div>
+        </div>
+      </div>
+      
+      <div class="formRow">
+        <input type="submit" value="Add New File" class="buttonM bGreen mb10 mt5" >
       </div>
 
     </div>
-  </div>
-
-</div>
-
+  </fieldset>
+</form>

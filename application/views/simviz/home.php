@@ -12,7 +12,6 @@
       else
       {
         $("#new_tb").hide();
-        
         //go get configs for that TB and fill select
       }
     });
@@ -25,7 +24,6 @@
       else
       {
         $("#new_configuration").hide();
-        
         //go get configs for that TB and fill select
       }
     });
@@ -36,47 +34,20 @@
 
 </script>
 
-<!--<form method="POST" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/simviz/testPost">
-  <input type="text" name="test"/>
-  <div id="testbench">
-    Testbench Name: 
-
-    <div id="exist_testbench">
-      <select id="select_tb" name="select_tb">
-        <option value="0">Select One</option>
-<?php
-foreach ($testbenches as $tb)
-{
-  echo '<option value="' . $tb->tbID . '">' . $tb->tbName . '</option>';
-}
-?>
-      </select>
-    </div>
-    <div id="new_tb">
-      <br/>
-      or Enter a New Name: <input type="text" name="new_testbench"/>
-      </br>
-    </div>
-  </div>
-  <br/>
-  <input type="submit" value="Add New File">
-</form>--> 
-
-<?php //echo form_open_multipart(base_url()."index.php/simviz/addNewSimulation");?>
-<form method="POST" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/simviz/addNewSimulation" class="main">
+<form id="simForm" method="POST" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/simviz/addNewSimulation" class="main validate">
   <fieldset>
     <div class="widget fluid">
       <div class="whead"><h6>Add A New Simulation Mat File:</h6><div class="clear"></div></div>
 
 
-      <div id="testbench">
+      <div id="testbench" class="validate_any">
 
 
         <div class="formRow"  id="exist_testbench">
 
           <div class="grid3"><label>Testbench Name:</label> </div>
           <div class="grid9">
-            <select id="select_tb" name="select_tb">
+            <select id="select_tb" name="select_tb" class="required">
               <option value="0">Select One</option>
               <?php
               foreach ($testbenches as $tb)
@@ -90,18 +61,18 @@ foreach ($testbenches as $tb)
         </div>
         <div class="formRow"  id="new_tb">
           <div class="grid3"><label>or Enter a New Name:</label></div>
-          <div class="grid9"><input type="text" name="new_testbench"/></div>
+          <div class="grid9"><input type="text" name="new_testbench" class="required"/></div>
           <div class="clear"></div>
         </div>
       </div>
 
-      <div id="configuration">
+      <div id="configuration" class="validate_any">
 
 
         <div class="formRow" id="exist_configuration">
           <div class="grid3"><label>Configuration Name:</label></div>
           <div class="grid9">
-            <select id="select_config" name="select_config">
+            <select id="select_config" name="select_config" class="required">
               <option value="0">Select One</option>
               <?php
               foreach ($configurations as $cfg)
@@ -116,7 +87,7 @@ foreach ($testbenches as $tb)
         <div class="formRow" id="new_configuration">
           <div class="grid3"><label>or Name a New Configuration:</label></div>
           <div class="grid9">
-            <input type="text" name="new_config"/>
+            <input type="text" name="new_config" class="required"/>
           </div>
           <div class="clear"></div>
         </div>
@@ -124,7 +95,7 @@ foreach ($testbenches as $tb)
 
       <div class="formRow" id="configuration">
         <div class="grid3"><label>Simulation Name:</label></div>
-        <div class="grid9"><input type="text" name="new_simulation"/></div>
+        <div class="grid9"><input type="text" name="new_simulation" class="required"/></div>
         <div class="clear"></div>
       </div>
 
@@ -132,15 +103,46 @@ foreach ($testbenches as $tb)
       <div class="formRow">
         <div class="grid3"><label>Select MAT File:</label></div>
         <div class="grid9">
-          <input type="file" name="upfile" size="20">
+          <input type="file" name="upfile" size="20" class="required">
 
         </div>
         <div class="clear"></div>
       </div>
       <div class="formRow">
-        <input type="submit" value="Add New File" class="buttonM bGreen mb10 mt5" >
+        <input id="LoadingDialog_open" type="submit" value="Add New File" class="buttonM bGreen mb10 mt5" >
       </div>
 
     </div>
   </fieldset>
 </form>
+
+<script>
+  $(document).ready(function() {
+    //Add variable / Variable Search Functions
+    $('#LoadingDialog').dialog({
+      autoOpen: false,
+      width: 300,
+      height: 200,
+      buttons: {}
+    });
+
+    $('#LoadingDialog_open').live("click", function (e) {
+      //e.preventDefault();
+      $('#LoadingDialog').dialog('open');
+      $('#simForm').submit();
+    });
+  });
+</script>
+
+
+<div id="LoadingDialog" class="dialog" title="Importing and Converting MAT File">
+  <h3>Converting Mat File</h3>
+  <div class="fluid">
+    <div class="widget grid12">
+      <img id="barLoader" src="<?php echo base_url(); ?>include/images/circle_loader.gif" />
+    </div>
+  </div>
+</div>
+
+
+

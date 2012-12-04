@@ -919,7 +919,7 @@ class Simviz extends CI_Controller
         $confName = $this->input->post('new_config');
         $confData = array(
             "confName" => $confName,
-            "confFolderName" => php_strip_whitespace($confName)
+            "confFolderName" => trim(str_replace(" ", "", $confName))
         );
         $confID = $this->sims->createConfiguration($confData);
         $simData = array(

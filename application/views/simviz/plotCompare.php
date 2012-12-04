@@ -1,11 +1,11 @@
 <?php
 $plotID = $plot->PlotID;
 ?>
-<script src="http://mdanderson.me/projects/isis/js/highcharts.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/js/modules/exporting.src.js"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/plotutil/include/js/plugins/jstree/_lib/jquery.cookie.js"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/plotutil/include/js/plugins/jstree/_lib/jquery.hotkeys.js"></script>
-<script type="text/javascript" src="http://mdanderson.me/projects/isis/plotutil/include/js/plugins/jstree/jquery.jstree.js"></script>
+<script src="<?php echo base_url(); ?>include/js/highcharts.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/modules/exporting.src.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/plugins/jstree/_lib/jquery.cookie.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/plugins/jstree/_lib/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>include/js/plugins/jstree/jquery.jstree.js"></script>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>include/js/knockout-2.1.0.js"></script>
 
@@ -98,7 +98,7 @@ $plotID = $plot->PlotID;
       self.shouldShowCommentLoader = ko.observable(false);
       
       
-      console.log(json);
+      //console.log(json);
       //Computables
      
       
@@ -193,7 +193,7 @@ $plotID = $plot->PlotID;
           var json = $.parseJSON(result);
           self.timeSeriesVar(new Variable(json));
           
-          console.log(self.timeSeriesVar().variable_id());
+          //console.log(self.timeSeriesVar().variable_id());
         });
       };
       
@@ -211,10 +211,6 @@ $plotID = $plot->PlotID;
             marginRight: 130,
             marginBottom: 75,
             events: {
-              click : function (event)
-              {
-                console.log('click');
-              },
               selection: function(event) {
                 if (event.xAxis != null)
                 {
@@ -318,17 +314,15 @@ $plotID = $plot->PlotID;
               position: {x: 50, y: -30}
             },
             events: {
-              click : function (event1)
-              {console.log('click');},
               selection: function(event1) {
                 if (event1.xAxis != null)
                 {
-                  var preMin = chart1.xAxis[0].min;
-                  var preMax = chart1.xAxis[0].max;
+                  var preMin = self.chart2().xAxis[0].min;
+                  var preMax = self.chart2().xAxis[0].max;
                   var postMin = event1.xAxis[0].min;
                   var postMax = event1.xAxis[0].max;
-                  console.log(chart1.xAxis[0].min);
-                  console.log(chart1.xAxis[0].max);
+                  console.log(self.chart2().xAxis[0].min);
+                  console.log(self.chart2().xAxis[0].max);
                   console.log(event1.xAxis[0].min);
                   console.log(event1.xAxis[0].max);
                   var maxes = Math.abs(postMax-preMax);
@@ -337,10 +331,10 @@ $plotID = $plot->PlotID;
                   console.log(mins);
                   var diff = maxes / (mins);
                   console.log("Diff:"+diff);
-                  console.log("Chart Interval Pre: "+chart1.xAxis[0].tickInterval);
-                  chart1.xAxis[0].tickInterval = chart1.xAxis[0].tickInterval / diff;
-                  chart1.redraw();
-                  console.log("Chart Interval Post: "+chart1.xAxis[0].tickInterval);
+                  console.log("Chart Interval Pre: "+self.chart2().xAxis[0].tickInterval);
+                  self.chart2().xAxis[0].tickInterval = self.chart2().xAxis[0].tickInterval / diff;
+                  self.chart2().redraw();
+                  console.log("Chart Interval Post: "+self.chart2().xAxis[0].tickInterval);
                   console.log(
                   Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', event1.xAxis[0].min),
                   Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', event1.xAxis[0].max)
@@ -448,7 +442,7 @@ $plotID = $plot->PlotID;
         var time_data_link = self.includeFilePath+settings.data_folder+'/'+self.timeSeriesVar().data_link();
         var time = new Array();
         
-        console.log(yvar.data_link());
+        //console.log(yvar.data_link());
         
         $.getJSON(time_data_link, function(json) {
           $.each(json, function (i, obj) {
@@ -470,7 +464,7 @@ $plotID = $plot->PlotID;
                   console.log("var");
                   var var_data_link = self.includeFilePath+settings.data_folder+'/'+yvar.data_link();
                   
-                  console.log(var_data_link);
+                  //console.log(var_data_link);
                   $.getJSON(var_data_link, function(json) {
                     
                     console.log(name);
@@ -523,7 +517,7 @@ $plotID = $plot->PlotID;
                 {
                   console.log("param");
                   var var_data_link = self.includeFilePath+settings.data_folder+'/'+yvar.data_link();
-                  console.log(var_data_link);
+                  //console.log(var_data_link);
                   $.getJSON(var_data_link, function(json) {
                     
                     console.log(name);
@@ -574,7 +568,7 @@ $plotID = $plot->PlotID;
               
               $.getJSON(data_link, function(ts_json) {
                 $.each(ts_json[obj.index], function (j, obj2) {time.push(obj2);});
-                console.log(time);
+                //console.log(time);
                 
                 //Once we have time, do awesome things
                 if (yvar.data_link().indexOf("var") > -1)
@@ -635,7 +629,7 @@ $plotID = $plot->PlotID;
                 {
                   console.log("param");
                   var var_data_link = self.includeFilePath+pl2_settings.data_folder+'/'+yvar.data_link();
-                  console.log(var_data_link);
+                  //console.log(var_data_link);
                   $.getJSON(var_data_link, function(json) {
                     
                     console.log(name);
@@ -719,7 +713,7 @@ $plotID = $plot->PlotID;
         {
           
           var json = $.parseJSON(result);
-          console.log(json);
+          //console.log(json);
           var mappedVars = $.map(json.variables, function(item) { return new Variable(item) });
           self.searchVariables(mappedVars);
           
@@ -936,28 +930,27 @@ $plotID = $plot->PlotID;
   </div>
   <div class="grid4">
     <div class="widget">
-      <div class="whead"><h6>Plotting History</h6><div class="clear"></div></div>
+      <div class="whead"><h6>Plots</h6><div class="clear"></div></div>
       <div id="dyna" class="hiddenpars">
         <a class="tOptions" title="Options"><img src="<?php echo base_url(); ?>include/images/icons/options" alt="" /></a>
         <table cellpadding="0" cellspacing="0" border="0" class="vTable" id="dynamicVTable">
           <thead>
             <tr>
-              <th>Version<span class="sorting" style="display: block;"></span></th>
+              <th>Plot Name<span class="sorting" style="display: block;"></span></th>
               <th>Created</th>
             </tr>
           </thead>
           <tbody>
-            <?php
-            foreach ($plots as $plt)
-            {
-              ?>
-              <tr class="gradeX">
-                <td><a href="<?php echo site_url(); ?>/plot/<?php echo $plt->PlotID; ?>">Version <?php echo $plt->PlotVersion; ?></a></td>
-                <td><?php echo date("D M d, Y", strtotime($plt->PlotCreateDate)); ?></td>
-              </tr>
-              <?php
-            }
-            ?>
+
+            <tr class="gradeX">
+              <td><a href="<?php echo site_url(); ?>/plot/<?php echo $plot->PlotID; ?>">Sim <?php echo $plot->PlotSimName; ?> - Version <?php echo $plot->PlotVersion; ?></a></td>
+              <td><?php echo date("D M d, Y", strtotime($plot->PlotCreateDate)); ?></td>
+            </tr>
+            <tr class="gradeX">
+              <td><a href="<?php echo site_url(); ?>/plot/<?php echo $plot2->PlotID; ?>">Sim <?php echo $plot2->PlotSimName; ?> - Version <?php echo $plot2->PlotVersion; ?></a></td>
+              <td><?php echo date("D M d, Y", strtotime($plot2->PlotCreateDate)); ?></td>
+            </tr>
+
           </tbody>
         </table>
       </div>
